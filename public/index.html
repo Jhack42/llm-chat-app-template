@@ -280,12 +280,14 @@
 
       .typing-indicator {
         display: none;
+        margin-bottom: 1rem;
+        font-style: italic;
+        color: var(--text-secondary);
         align-self: flex-start;
         background: var(--assistant-msg-bg);
         padding: 1rem 1.5rem;
         border-radius: 20px;
         border-bottom-left-radius: 8px;
-        margin-bottom: 1rem;
         box-shadow: var(--shadow-soft);
         animation: pulse 2s infinite;
       }
@@ -392,23 +394,12 @@
       <div class="chat-container">
         <div id="chat-messages" class="chat-messages">
           <div class="message assistant-message">
-            <div class="message-header">
-              <div class="message-icon">
-                <i class="fas fa-robot"></i>
-              </div>
-              <span>Asistente IA</span>
-            </div>
-            <p>¡Hola! Soy tu asistente de inteligencia artificial profesional. Estoy aquí para ayudarte con cualquier pregunta o tarea que tengas. ¿En qué puedo asistirte hoy?</p>
+            <p>¡Hola! Soy un asistente de IA potenciado por Cloudflare Workers AI. ¿Cómo puedo ayudarte hoy?</p>
           </div>
         </div>
 
         <div class="typing-indicator" id="typing-indicator">
-          <div class="typing-dots">
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-          </div>
-          <span style="margin-left: 0.5rem;">El asistente está escribiendo...</span>
+          IA está pensando...
         </div>
 
         <div class="message-input-container">
@@ -432,88 +423,7 @@
       </div>
     </div>
 
-    <script>
-      // Variables globales
-      const chatMessages = document.getElementById('chat-messages');
-      const userInput = document.getElementById('user-input');
-      const sendButton = document.getElementById('send-button');
-      const typingIndicator = document.getElementById('typing-indicator');
-
-      // Auto-resize textarea
-      userInput.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-      });
-
-      // Enviar mensaje con Enter (Shift+Enter para nueva línea)
-      userInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-
-      // Función para enviar mensaje
-      sendButton.addEventListener('click', sendMessage);
-
-      function sendMessage() {
-        const message = userInput.value.trim();
-        if (!message) return;
-
-        // Agregar mensaje del usuario
-        addMessage(message, 'user');
-        
-        // Limpiar input
-        userInput.value = '';
-        userInput.style.height = 'auto';
-        
-        // Mostrar indicador de escritura
-        showTypingIndicator();
-        
-        // Simular respuesta del asistente (aquí iría la integración con la API)
-        setTimeout(() => {
-          hideTypingIndicator();
-          addMessage('Esta es una respuesta de ejemplo del asistente IA. En una implementación real, aquí se conectaría con la API de Cloudflare Workers AI para generar respuestas inteligentes.', 'assistant');
-        }, 1500);
-      }
-
-      function addMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${sender}-message`;
-        
-        const icon = sender === 'user' ? 'fa-user' : 'fa-robot';
-        const senderName = sender === 'user' ? 'Tú' : 'Asistente IA';
-        
-        messageDiv.innerHTML = `
-          <div class="message-header">
-            <div class="message-icon">
-              <i class="fas ${icon}"></i>
-            </div>
-            <span>${senderName}</span>
-          </div>
-          <p>${text}</p>
-        `;
-        
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
-
-      function showTypingIndicator() {
-        typingIndicator.classList.add('visible');
-        chatMessages.appendChild(typingIndicator);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        sendButton.disabled = true;
-      }
-
-      function hideTypingIndicator() {
-        typingIndicator.classList.remove('visible');
-        sendButton.disabled = false;
-      }
-
-      // Enfocar el input al cargar la página
-      window.addEventListener('load', () => {
-        userInput.focus();
-      });
-    </script>
+    <!-- Chat app script -->
+    <script src="chat.js"></script>
   </body>
 </html>
